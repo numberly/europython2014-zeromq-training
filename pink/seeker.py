@@ -17,7 +17,7 @@ args = parser.parse_args()
 def get_ip():
     import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(('www.google.com', 0))
+    s.connect(('www.google.com', 80))
     ip = s.getsockname()[0]
     s.close()
     return ip
