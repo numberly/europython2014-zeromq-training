@@ -2,14 +2,11 @@
 import argparse
 import zmq
 from zmq.eventloop import ioloop, zmqstream
-import json
 
 
 io_loop = ioloop.IOLoop()
 
 context = zmq.Context()
-
-
 
 CITY = None
 
@@ -21,6 +18,7 @@ def get_ip():
     ip = s.getsockname()[0]
     s.close()
     return ip
+
 
 def guess(stream, message):
     print message
@@ -49,5 +47,5 @@ CITY = args.city
 sock = context.socket(zmq.ROUTER)
 stream = zmqstream.ZMQStream(sock, io_loop=io_loop)
 stream.on_recv_stream(guess)
-sock.bind("tcp://%s:%s" %(myip, args.port))
+sock.bind("tcp://%s:%s" % (myip, args.port))
 io_loop.start()
