@@ -24,9 +24,14 @@ mysocket = context.socket(zmq.DEALER)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
+parser.add_argument('-l', '--local-address', default=None)
 
 args = parser.parse_args()
 
 mysocket.connect(args.connect_address)
-mysocket.send(get_local_ip() + ":5555")
+if args.local_address is None:
+  ip = get_local_ip()
+else:
+  ip = args.local_address
+mysocket.send(ip + ":5555")
 print(mysocket.recv())
