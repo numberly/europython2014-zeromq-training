@@ -29,7 +29,7 @@ def guess(stream, message):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--port', default='5557')
-parser.add_argument('-C', '--connect-address', default='tcp://172.16.16.188:5556')
+parser.add_argument('-C', '--connect-address', default='tcp://127.0.0.1:5555')
 parser.add_argument('-c', '--city', default='Berlin')
 
 args = parser.parse_args()
