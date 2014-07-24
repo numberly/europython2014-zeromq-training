@@ -4,7 +4,6 @@ import zmq
 from zmq.eventloop import ioloop, zmqstream
 import json
 
-
 io_loop = ioloop.IOLoop()
 
 context = zmq.Context()

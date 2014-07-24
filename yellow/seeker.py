@@ -4,20 +4,22 @@ import zmq
 
 context = zmq.Context()
 
-socket = context.socket(zmq.DEALER)
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 
 args = parser.parse_args()
 
-socket.connect(args.connect_address)
+def list_ips(broker_ip):
+    socket = context.socket(zmq.DEALER)
 
-msg = "LIST"
-socket.send(msg)
-print "Waiting for response..."
-response = socket.recv()
-ips = response.split(" ")
+    socket.connect(broker_ip)
+
+    msg = "LIST"
+    socket.send(msg)
+    print "Waiting for response..."
+    response = socket.recv()
+    ips = response.split(" ")
+    return ips
 
 def ask_hider(ip):
     req_socket = context.socket(zmq.REQ)
@@ -27,6 +29,8 @@ def ask_hider(ip):
     return response=="CORRECT"
         
 guess = "WARSAW"
+
+ips = list_ips(args.connect_address)
 
 for ip in ips:
     print "Asking {}".format(ip)
