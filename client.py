@@ -26,4 +26,4 @@ s.connect(args.connect_address)
 for i in range(10):
     msg = "Hi server this is my message {}".format(i)
     s.send(msg)
-    print s.recv()
+    print(s.recv())
