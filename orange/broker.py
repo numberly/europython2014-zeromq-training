@@ -11,15 +11,13 @@ CLIENTS = set()
 
 
 def hello(stream, message):
-    addr, cmd = message
-
-    if "REGISTER" in cmd:
-        arguments = cmd.split()
-        clientip = arguments[1]
-        CLIENTS.add(clientip)
-        reply = " ".join(list(CLIENTS))
-        stream.send_multipart((addr, reply))
+    addr, command = message
+    command = command.split(' ')
+    if command[0] == 'REGISTER':
+        CLIENTS.add(command[1])
         print "ClientIP added {}".format(clientip)
+    reply = " ".join(list(CLIENTS))
+    stream.send_multipart((addr, reply))
 
 stream.on_recv_stream(hello)
 
