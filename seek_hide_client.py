@@ -8,14 +8,11 @@ socket = context.socket(zmq.DEALER)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
+parser.add_argument('-i', '--ip-address', default='127.0.0.1')
+parser.add_argument('-p', '--port', default='5555')
 
 args = parser.parse_args()
 
 socket.connect(args.connect_address)
-
-ip = get_local_ip()
-port = 5555
-msg = "HELLOFROM {} {}".format(ip, port)
-socket.send(msg)
-response = socket.recv()
-print response
+socket.send(args.ip_address + ":" + args.port)
+print socket.recv()
