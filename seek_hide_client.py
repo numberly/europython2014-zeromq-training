@@ -5,6 +5,17 @@ import socket
 ip = socket.gethostbyname(socket.gethostname())
 port = 5555
 
+
+def get_local_ip():
+    """
+    Retrieve the clients local ip address and return it as a string
+
+    :returns IpAddress as String
+    """
+    ip = socket.gethostbyname(socket.gethostname())
+    return ip
+
+
 context = zmq.Context()
 
 socket = context.socket(zmq.DEALER)

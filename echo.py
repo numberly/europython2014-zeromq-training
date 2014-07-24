@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import argparse
 import zmq
 from zmq.eventloop import ioloop, zmqstream
@@ -20,7 +20,7 @@ def echo(stream, message):
 stream.on_recv_stream(echo)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-b', '--bind-address', default='tcp://127.0.0.1:5555')
+parser.add_argument('-b', '--bind-address', default='tcp://0.0.0.0:5555')
 
 args = parser.parse_args()
 
