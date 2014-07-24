@@ -28,7 +28,7 @@ if not local_address:
 
 sock.connect(args.connect_address)
 
-sock.send(local_address)
+sock.send('LIST')
 response = sock.recv_string()
 peers = response.split()
 
