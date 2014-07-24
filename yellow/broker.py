@@ -4,7 +4,6 @@ import zmq
 from zmq.eventloop import ioloop, zmqstream
 import json
 
-
 io_loop = ioloop.IOLoop()
 
 context = zmq.Context()
@@ -19,8 +18,10 @@ CLIENTS = set()
 
 def hello(stream, message):
     print "Got connection"
-    identifier, client = message
-    CLIENTS.add(client)
+    identifier, cmd = message
+    if cmd.startswith("REGISTER"):
+        _, point = cmd.split(" ")
+        CLIENTS.add(point)
     reply = ' '.join(list(CLIENTS))
     stream.send_multipart([identifier, reply])
 

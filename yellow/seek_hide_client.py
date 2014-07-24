@@ -2,15 +2,7 @@
 import argparse
 import zmq
 
-def get_local_ip():
-    """
-    Retrieve the clients local ip address and return it as a string
-
-    :returns IpAddress as String
-    """
-    import socket
-    return socket.gethostbyname(socket.gethostname())
-
+from utils import get_local_ip
 
 context = zmq.Context()
 
@@ -25,7 +17,7 @@ socket.connect(args.connect_address)
 
 ip = get_local_ip()
 port = 5555
-msg = "{}:{}".format(ip, port)
+msg = "REGISTER {}:{}".format(ip, port)
 socket.send(msg)
 print "Waiting for response..."
 response = socket.recv()
