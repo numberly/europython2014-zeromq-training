@@ -20,8 +20,8 @@ if __name__ == '__main__':
     parser = OptionParser()
 
     parser.add_option(
-        "-a",
-        "--address",
+        "-c",
+        "--connect-address",
         dest="address",
         default='tcp://127.0.0.1:5555'
     )
@@ -30,4 +30,5 @@ if __name__ == '__main__':
     client.connect(options.address)
 
     for i in range(10):
-        print client.send(str(i))
+        msg = "Hi server this is my message {}".format(i)
+        print client.send(msg)
