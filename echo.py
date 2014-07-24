@@ -17,4 +17,5 @@ def echo(stream, message):
 
 stream.on_recv_stream(echo)
 
+socket.bind('tcp://127.0.0.1:5555')
 io_loop.start()
