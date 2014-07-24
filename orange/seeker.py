@@ -2,6 +2,7 @@
 
 import argparse
 import zmq
+from utils import get_local_ip
 
 context = zmq.Context()
 
@@ -12,9 +13,7 @@ parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 parser.add_argument('-p', '--port', default=5555)
 
 args = parser.parse_args()
-
-import socket as socket2
-myip = socket2.gethostbyname(socket2.gethostname())
+myip = get_local_ip()
 
 socket.connect(args.connect_address)
 
