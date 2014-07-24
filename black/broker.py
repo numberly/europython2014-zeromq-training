@@ -18,8 +18,8 @@ CLIENTS = set()
 
 
 def hello(stream, message):
-    id, ip, port = message
-    CLIENTS.add("{}:{}".format(ip,port))
+    id, tcp = message
+    CLIENTS.add(tcp)
     print CLIENTS
     reply = list(CLIENTS)
     stream.send_multipart([id, json.dumps(reply)])

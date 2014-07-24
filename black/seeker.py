@@ -14,12 +14,9 @@ parser.add_argument('-i', '--ip')
 
 args = parser.parse_args()
 
-import socket as socket2
-myip = socket2.gethostbyname(socket2.gethostname())
-
 socket.connect(args.connect_address)
 
 # First just register to the server
-command = 'HELLO {} {}'.format(myip, args.port)
-socket.send_multipart([args.ip, args.port])
+command = '{}:{}'.format(args.ip, args.port)
+socket.send_multipart([command])
 print socket.recv_json()
