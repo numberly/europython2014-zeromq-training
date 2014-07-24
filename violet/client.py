@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 import argparse
 import zmq
+import socket
 
 
 def get_local_ip():
@@ -11,7 +12,7 @@ def get_local_ip():
     :returns IpAddress as String
     """
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect((parser.broker_address, 0))
+    s.connect((args.connect_address, 0))
     ip = s.getsockname()[0]
     s.close()
     return ip
@@ -19,14 +20,13 @@ def get_local_ip():
 
 context = zmq.Context()
 
-socket = context.socket(zmq.DEALER)
+mysocket = context.socket(zmq.DEALER)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 
 args = parser.parse_args()
 
-socket.connect(args.connect_address)
-for i in range(10):
-  socket.send("0.0.1.0:5555")
-  print(socket.recv())
+mysocket.connect(args.connect_address)
+mysocket.send(get_local_ip() + ":5555")
+print(mysocket.recv())
