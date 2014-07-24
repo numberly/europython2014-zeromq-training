@@ -30,7 +30,7 @@ stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
 def check_city_guess(stream, message):
     print "Got connection"
-    city = message
+    city = message[0]
     reply = 'CORRECT' if city in CITIES else 'INCORRECT'
 
     stream.send(reply)
