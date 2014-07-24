@@ -34,7 +34,8 @@ peers = socket.recv_multipart()[0].split(' ')
 cities = """Berlin
 London
 Paris
-""".split()
+Dublin
+""".splitlines()
 
 def get_cities():
     for c in cities:
