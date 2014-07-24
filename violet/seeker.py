@@ -1,5 +1,6 @@
 
 #!/usr/bin/env python
+import sys
 import argparse
 import zmq
 import socket
@@ -27,6 +28,7 @@ mysocket = context.socket(zmq.DEALER)
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://%s:%s' % ('172.16.16.188', 5556))
 parser.add_argument('-l', '--local-address', default=None)
+parser.add_argument('-f', '--filename', default=None)
 
 args = parser.parse_args()
 
@@ -35,6 +37,10 @@ if args.local_address is None:
   ip = get_local_ip()
 else:
   ip = args.local_address
+
+if args.filename is None:
+    print 'filename missing'
+    sys.exit(1)
 
 
 def get_hider_ips(ip, port):
@@ -45,9 +51,16 @@ def get_hider_ips(ip, port):
 
 
 def guess_hider(sock, guess):
-    sock.send(guess.lower())
-    ans = sock.recv()
-    return ans == 'CORRECT'
+    try:
+        print 'sending'
+        sock.send(guess)
+        print 'sent'
+        ans = sock.recv()
+        print 'recc'
+        return ans == 'CORRECT'
+    except Exception as e:
+        print 'ERROR %s' % e
+        return False
 
 
 def is_valid_host(ip_port):
@@ -59,13 +72,15 @@ def is_valid_host(ip_port):
 
 
 if __name__ == '__main__':
-    guesses = ['london', 'tel-aviv', 'berlin', 'sydney']
+    guesses = [guess.strip().lower() for guess in open(args.filename).readlines()]
+    print guesses
     for ip_port in get_hider_ips(ip, PORT):
         try:
             if not is_valid_host(ip_port):
                 raise Exception('no valid ip %s' % ip_port)
             context = zmq.Context()
             hidersock = context.socket(zmq.DEALER)
+            hidersock.RCVTIMEO = 500
             hidersock.connect('tcp://%s' % (ip_port))
         except Exception as e:
             print 'failed with %s %s' % (ip_port, e)
@@ -76,4 +91,3 @@ if __name__ == '__main__':
                 print 'FOUND: %s on %s' % (guess, ip_port)
             else:
                 print '.',
-
