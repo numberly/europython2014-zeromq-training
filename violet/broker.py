@@ -23,7 +23,7 @@ def reply(stream, message):
     known.add((msg[0], msg[1]))
     res = [a + ":" + b for a,b in known]
     print res
-    stream.send_multipart(" ".join(res))
+    stream.send_multipart([message[0], " ".join(res)])
     print "sent"
 
 stream.on_recv_stream(reply)
