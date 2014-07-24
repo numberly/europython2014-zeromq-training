@@ -18,7 +18,7 @@ myip = get_local_ip()
 socket.connect(args.connect_address)
 
 # First just register to the server
-command = '{}:{}'.format(myip, args.port)
+command = 'REGISTER {}:{}'.format(myip, args.port)
 socket.send(command)
 resp = socket.recv()
 print resp
