@@ -6,6 +6,7 @@ context = zmq.Context()
 
 s = context.socket(zmq.DEALER)
 
+# @ep14 172.16.16.228:5555
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 
