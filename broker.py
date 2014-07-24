@@ -18,19 +18,8 @@ CLIENTS = set()
 
 
 def hello(stream, message):
-    if len(message) != 3:
-        reply = "ERROR invalid request"
-
-    elif message[0] == "HELLO":
-        ip = message[1]
-        port = int(message[2])
-
-        CLIENTS.add((ip, port))
-        reply = " ".join(["%s:%s" % c for c in list(CLIENTS)])
-
-    else:
-        reply = "ERROR unknown command"
-
+    CLIENTS.add(message[0])
+    reply = list(CLIENTS)
     stream.send_multipart(reply)
 
 stream.on_recv_stream(hello)
