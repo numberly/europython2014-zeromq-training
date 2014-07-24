@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import zmq
 
 context = zmq.Context()
