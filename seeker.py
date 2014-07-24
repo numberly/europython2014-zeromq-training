@@ -20,5 +20,5 @@ socket.connect(args.connect_address)
 
 # First just register to the server
 command = 'HELLO {} {}'.format(myip, args.port)
-socket.send(command)
-print socket.recv()
+socket.send_multipart([myip, args.port])
+print socket.recv_json()
