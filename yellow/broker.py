@@ -18,9 +18,11 @@ CLIENTS = set()
 
 
 def hello(stream, message):
-    CLIENTS.add(message[0])
+    print "Got connection"
+    identifier, client = message
+    CLIENTS.add(client)
     reply = list(CLIENTS)
-    stream.send_multipart(reply)
+    stream.send_multipart([identifier, str(reply)])
 
 stream.on_recv_stream(hello)
 
