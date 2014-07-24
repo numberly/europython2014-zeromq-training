@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import zmq
-import socket
-ip = socket.gethostbyname(socket.gethostname())
 port = 5555
 
 
@@ -12,6 +10,7 @@ def get_local_ip():
 
     :returns IpAddress as String
     """
+    import socket
     ip = socket.gethostbyname(socket.gethostname())
     return ip
 
@@ -24,6 +23,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 
 args = parser.parse_args()
+
+ip = get_local_ip()
 
 msg = "{ip}:{port}".format(ip=ip, port=port) 
 socket.connect(args.connect_address)
