@@ -25,7 +25,7 @@ socket.connect(args.connect_address)
 
 ip = get_local_ip()
 port = 5555
-msg = "HELLOFROM {} {}".format(ip, port)
+msg = "{}:{}".format(ip, port)
 socket.send(msg)
 response = socket.recv()
 print response
