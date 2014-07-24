@@ -28,4 +28,4 @@ args = parser.parse_args()
 socket.connect(args.connect_address)
 for i in range(10):
     socket.send(str(i))
-    print socket.recv()
+    print(socket.recv())
