@@ -21,8 +21,8 @@ def hello(stream, message):
     print "Got connection"
     identifier, client = message
     CLIENTS.add(client)
-    reply = list(CLIENTS)
-    stream.send_multipart([identifier, str(reply)])
+    reply = ' '.join(list(CLIENTS))
+    stream.send_multipart([identifier, reply])
 
 stream.on_recv_stream(hello)
 
