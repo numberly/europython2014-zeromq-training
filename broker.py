@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+import argparse
+import zmq
+from zmq.eventloop import ioloop, zmqstream
+import json
+
+
+io_loop = ioloop.IOLoop()
+
+context = zmq.Context()
+
+socket = context.socket(zmq.ROUTER)
+
+
+stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
+
+CLIENTS = set()
+
+
+def hello(stream, message):
+    if len(message) != 3:
+        reply = "ERROR invalid request"
+
+    elif message[0] == "HELLO":
+        ip = message[1]
+        port = int(message[2])
+
+        CLIENTS.add((ip, port))
+        reply = " ".join(["%s:%s" % c for c in list(CLIENTS)])
+
+    else:
+        reply = "ERROR unknown command"
+
+    stream.send_multipart(reply)
+
+stream.on_recv_stream(hello)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-b', '--bind-address', default='tcp://0.0.0.0:5555')
+
+args = parser.parse_args()
+
+socket.bind(args.bind_address)
+io_loop.start()
