@@ -14,5 +14,5 @@ parser.add_argument('-p', '--port', default='5555')
 args = parser.parse_args()
 
 socket.connect(args.connect_address)
-socket.send("HELLO FROM " + args.ip_address + " " + args.port)
+socket.send(args.ip_address + ":" + args.port)
 print socket.recv()
