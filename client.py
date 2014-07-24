@@ -4,7 +4,6 @@ context = zmq.Context()
 
 socket = context.socket(zmq.DEALER)
 
-socket.connect('tcp://127.0.0.1:5555')
-for i in range(10):
-    socket.send_multipart([str(i)])
-    print socket.recv()
+socket.connect('tcp://172.16.16.228:5555')
+while True:
+    socket.send_multipart([str(1)])
