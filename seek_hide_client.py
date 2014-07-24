@@ -1,18 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import zmq
-import socket as so
-
-
-def get_local_ip():
-    """
-    Retrieve the clients local ip address and return it as a string
-
-    :returns IpAddress as String
-    """
-    ip = so.gethostbyname(so.gethostname())
-    return ip
-
 
 context = zmq.Context()
 

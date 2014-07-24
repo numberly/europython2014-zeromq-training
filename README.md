@@ -1,15 +1,19 @@
-@europython2014
+# ØMQ training at EuroPython 2014
 
+## Simple Echo server and client
 
-run:
+These are implementations of [RFC-001](RFC-001.md).
+
+Running the server:
 
     ./echo.py
+
+Running the client:
+
     ./client.py
 
+## Hide and Seek
 
-Broker:
+This will be an implementation of [RFC-002](RFC-002.md).
 
-    send client's IP address, add to Python set (in-memory only), return all members of set (collection of known peers)
-
-
-
+*TODO*
