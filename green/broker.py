@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import pdb
 import zmq
 from zmq.eventloop import ioloop, zmqstream
 import json
@@ -18,9 +19,13 @@ CLIENTS = set()
 
 
 def hello(stream, message):
+    #pdb.set_trace()
+    print message
     CLIENTS.add(message[1])
-    reply = ' '.join(CLIENTS)
-    stream.send_multipart([message[0], reply])
+    message[1] = ' '.join(CLIENTS)
+    #reply = list(CLIENTS)
+    #stream.send('stuff')
+    stream.send_multipart(message)
 
 stream.on_recv_stream(hello)
 

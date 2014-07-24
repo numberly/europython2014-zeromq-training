@@ -18,9 +18,10 @@ CLIENTS = set()
 
 
 def hello(stream, message):
+    print message
     CLIENTS.add(message[1])
-    reply = ' '.join(CLIENTS)
-    stream.send_multipart([message[0], reply])
+    reply = [message[0]] + list(CLIENTS)
+    stream.send_multipart(reply)
 
 stream.on_recv_stream(hello)
 

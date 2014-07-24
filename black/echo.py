@@ -1,8 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import argparse
 import zmq
 from zmq.eventloop import ioloop, zmqstream
-import json
 
 
 io_loop = ioloop.IOLoop()
@@ -14,15 +13,11 @@ socket = context.socket(zmq.ROUTER)
 
 stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
-CLIENTS = set()
 
+def echo(stream, message):
+    stream.send_multipart(message)
 
-def hello(stream, message):
-    CLIENTS.add(message[1])
-    reply = ' '.join(CLIENTS)
-    stream.send_multipart([message[0], reply])
-
-stream.on_recv_stream(hello)
+stream.on_recv_stream(echo)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-b', '--bind-address', default='tcp://0.0.0.0:5555')
