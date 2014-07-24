@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import time
 import zmq
 
 context = zmq.Context()
@@ -27,6 +28,41 @@ myip = get_ip()
 socket.connect(args.connect_address)
 
 # First just register to the server
-command = '{}:{}'.format(myip, args.port)
+command = 'REGISTER {}:{}'.format(myip, args.port)
 socket.send_string(command)
-print socket.recv_multipart()
+peers = socket.recv_multipart()[0].split(' ')
+
+cities = """Berlin
+London
+Paris
+""".split()
+
+def get_cities():
+    for c in cities:
+        if c:
+            yield c
+
+
+seeker = context.socket(zmq.DEALER)
+print peers
+for peer in peers:
+    seeker.connect('tcp://{}'.format(peer))
+poller = zmq.Poller()
+poller.register(seeker, zmq.POLLIN|zmq.POLLOUT)
+gen = get_cities()
+while True:
+    print 'poll'
+    socks = dict(poller.poll(timeout=1))
+    print socks
+    if seeker in socks and socks[seeker] == zmq.POLLOUT:
+        try:
+            city = next(gen)
+        except StopIteration:
+            break
+        print city
+        seeker.send(city)
+    if seeker in socks and socks[seeker] == zmq.POLLIN:
+        response = seeker.recv()
+        if response == 'CORRECT':
+            print 'Won', city
+    time.sleep(.01)
