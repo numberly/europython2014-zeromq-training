@@ -51,16 +51,12 @@ def get_hider_ips(ip, port):
 
 
 def guess_hider(sock, guess):
-    try:
         print 'sending'
         sock.send(guess)
         print 'sent'
         ans = sock.recv()
         print 'recc'
         return ans == 'CORRECT'
-    except Exception as e:
-        print 'ERROR %s' % e
-        return False
 
 
 def is_valid_host(ip_port):
@@ -73,7 +69,6 @@ def is_valid_host(ip_port):
 
 if __name__ == '__main__':
     guesses = [guess.strip().lower() for guess in open(args.filename).readlines()]
-    print guesses
     for ip_port in get_hider_ips(ip, PORT):
         try:
             if not is_valid_host(ip_port):
@@ -87,7 +82,11 @@ if __name__ == '__main__':
             continue
         print 'guessing on %s' % ip_port
         for guess in guesses:
-            if guess_hider(hidersock, guess):
-                print 'FOUND: %s on %s' % (guess, ip_port)
-            else:
-                print '.',
+            try:
+                if guess_hider(hidersock, guess):
+                    print 'FOUND: %s on %s' % (guess, ip_port)
+                else:
+                    print '.',
+            except Exception as e:
+                print 'ERROR %s' % e
+                break
