@@ -29,4 +29,14 @@ sock.connect(args.connect_address)
 
 sock.send(local_address)
 response = sock.recv_string()
-print response
+peers = response.split()
+
+print peers
+
+for peer in peers:
+    print 'Trying', peer
+    peer_socket = context.socket(zmq.DEALER)
+    peer_socket.connect('tcp://{}'.format(peer))
+    peer_socket.send('Berlin')
+    print peer_socket.recv_string()
+
