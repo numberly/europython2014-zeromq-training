@@ -1,10 +1,7 @@
-#!/usr/bin/env python2
+
+#!/usr/bin/env python
 import argparse
 import zmq
-
-
-PORT = 54321
-DEFUALT_SERVER = '172.16.16.228'
 
 
 def get_local_ip():
@@ -13,27 +10,23 @@ def get_local_ip():
 
     :returns IpAddress as String
     """
-    import socket
-    ip = socket.gethostbyname(socket.gethostname())
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect((parser.broker_address, 0))
+    ip = s.getsockname()[0]
+    s.close()
     return ip
 
 
-def hello(connect_address):
-    context = zmq.Context()
-    zmsocket = context.socket(zmq.DEALER)
-    zmsocket.connect()
-    msg = "{} {}".format(get_local_ip(), PORT)
-    zmsocket.send(msg)
-    known_clients = set(zmsocket.recv().split(" "))
-    return known_clients
+context = zmq.Context()
 
+socket = context.socket(zmq.DEALER)
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--connect-address', default='tcp://%s:5555' % DEFUALT_SERVER)
-    args = parser.parse_args()
-    print hello(args.connect_address)
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 
+args = parser.parse_args()
 
-if __name__ == '__main__':
-    main()
+socket.connect(args.connect_address)
+for i in range(10):
+  socket.send("0.0.1.0:5555")
+  print(socket.recv())
