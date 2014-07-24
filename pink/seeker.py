@@ -27,8 +27,7 @@ myip = get_ip()
 
 socket.connect(args.connect_address)
 
-# First just register to the server
-command = 'REGISTER {}:{}'.format(myip, args.port)
+command = 'LIST'
 socket.send_string(command)
 peers = socket.recv_multipart()[0].split(' ')
 
