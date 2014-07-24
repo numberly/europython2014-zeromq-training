@@ -19,12 +19,12 @@ stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
 def reply(stream, message):
     print message
-    msg = message[1].split()
-    if msg[0] == "HELLO":
-      known.add((msg[1], msg[2]))
+    msg = message[1].split(':')
+    known.add((msg[0], msg[1]))
     res = [a + ":" + b for a,b in known]
     print res
-    stream.send_multipart(" ".join(res))
+    stream.send_multipart([message[0], " ".join(res)])
+    print "sent"
 
 stream.on_recv_stream(reply)
 

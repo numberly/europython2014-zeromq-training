@@ -13,8 +13,16 @@ parser.add_argument('-p', '--port', default='5556')
 
 args = parser.parse_args()
 
-import socket as socket2
-myip = socket2.gethostbyname(socket2.gethostname())
+
+def get_ip():
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('www.google.com', 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
+myip = get_ip()
 
 socket.connect(args.connect_address)
 

@@ -6,17 +6,27 @@ from zmq.eventloop import ioloop, zmqstream
 io_loop = ioloop.IOLoop()
 context = zmq.Context()
 socket = context.socket(zmq.ROUTER)
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 CLIENTS = set()
 
 
 def hello(stream, message):
+<<<<<<< HEAD
     addr, clientip = message
     CLIENTS.add(clientip)
     reply = " ".join(list(CLIENTS))
     print reply
     stream.send_multipart((addr, reply))
     print "ClientIP added {}".format(clientip)
+=======
+    addr, text = message
+    CLIENTS.add(message[1])
+    stream.send_multipart((addr, ' '.join(CLIENTS)))
+>>>>>>> upstream/master
 
 stream.on_recv_stream(hello)
 
