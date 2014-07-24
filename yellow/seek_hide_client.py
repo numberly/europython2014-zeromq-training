@@ -25,7 +25,7 @@ socket.connect(args.connect_address)
 
 ip = get_local_ip()
 port = 5555
-msg = "{}:{}".format(ip, port)
+msg = "REGISTER {}:{}".format(ip, port)
 socket.send(msg)
 print "Waiting for response..."
 response = socket.recv()
