@@ -23,7 +23,7 @@ def get_ip():
 def guess(stream, message):
     print message
     city = message[1]
-    reply = "CORRECT" if city == CITY else "INCORRECT"
+    reply = "CORRECT" if city.lower() == CITY.lower() else "INCORRECT"
     stream.send_multipart([message[0], reply])
 
 
