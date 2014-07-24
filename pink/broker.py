@@ -19,9 +19,10 @@ CLIENTS = set()
 
 def hello(stream, message):
     print message
-    if message[1] == "REGISTER":
-        CLIENTS.add(message[2])
-    elif message[1] == "LIST":
+    parts = message[1].split()
+    if parts[0] == "REGISTER":
+        CLIENTS.add(parts[1])
+    elif parts[0] == "LIST":
         pass
     reply = [message[0], " ".join(list(CLIENTS))]
     stream.send_multipart(reply)
