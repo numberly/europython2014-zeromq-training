@@ -19,6 +19,17 @@ socket.connect(args.connect_address)
 
 # First just register to the server
 command = 'REGISTER {}:{}'.format(myip, args.port)
-socket.send(command)
-resp = socket.recv()
-print resp
+players = socket.recv_string().split()
+
+guesses = ['Ljubljana', 'Stockholm']
+
+for player in players:
+    player_socket = context.socket(zmq.DEALER)
+    player_socket.connect('tcp://{}'.format(player))
+    for guess in guesses:
+        player_socket.send(guess)
+        if socket.recv_string() == 'yes':
+            print('Guessed: {}'.format(guess))
+            break
+    else:
+        print("Couldn't guess the answer")
