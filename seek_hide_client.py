@@ -12,6 +12,10 @@ parser.add_argument('-c', '--connect-address', default='tcp://127.0.0.1:5555')
 args = parser.parse_args()
 
 socket.connect(args.connect_address)
-for i in range(10):
-    socket.send(str(i))
-    print(socket.recv())
+
+ip = get_local_ip()
+port = 5555
+msg = "HELLOFROM {}:{}".format(ip, port)
+socket.send(msg)
+response = socket.recv()
+print response
