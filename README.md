@@ -16,11 +16,7 @@ Running the client:
 
 This will be an implementation of [RFC-002](RFC-002.md) made by each team.
 
-Running the broker:
+# Run the broker
+# Run the seeker (list mode or register mode)
 
-    ./<team>/broker.py
-
-Running the seeker:
-
-    ./<team>/seek_hide_client.py
-
+[RFC-003](RFC-003.md) implements the `hider` part.
