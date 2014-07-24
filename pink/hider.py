@@ -14,22 +14,23 @@ socket = context.socket(zmq.ROUTER)
 
 stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
-CLIENTS = set()
+CITY = None
 
 
-def hello(stream, message):
-    id, tcp = message
-    CLIENTS.add(tcp)
-    print CLIENTS
-    reply = list(CLIENTS)
-    stream.send_multipart([id, json.dumps(reply)])
+def guess(stream, message):
+    print message
+    city = message[1]
+    reply = "YES" if city == CITY else "NO"
+    stream.send_multipart([message[0], reply])
 
-stream.on_recv_stream(hello)
+stream.on_recv_stream(guess)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-b', '--bind-address', default='tcp://0.0.0.0:5555')
+parser.add_argument('-c', '--city', default='Berlin')
 
 args = parser.parse_args()
 
+CITY = args.city
 socket.bind(args.bind_address)
 io_loop.start()
