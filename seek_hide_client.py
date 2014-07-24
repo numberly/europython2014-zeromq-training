@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import zmq
+import socket as so
 
 
 def get_local_ip():
@@ -9,7 +10,7 @@ def get_local_ip():
 
     :returns IpAddress as String
     """
-    ip = socket.gethostbyname(socket.gethostname())
+    ip = so.gethostbyname(so.gethostname())
     return ip
 
 
