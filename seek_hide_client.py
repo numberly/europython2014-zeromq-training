@@ -28,6 +28,5 @@ ip = get_local_ip()
 
 msg = "{ip}:{port}".format(ip=ip, port=port) 
 socket.connect(args.connect_address)
-for i in range(10):
-    socket.send(msg)
-    print socket.recv()
+socket.send(msg)
+print socket.recv()
