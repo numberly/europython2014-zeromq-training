@@ -11,7 +11,7 @@ io_loop = ioloop.IOLoop()
 
 context = zmq.Context()
 
-socket = context.socket(zmq.ROUTER)
+socket = context.socket(zmq.REP)
 
 CITIES = {'Ubatuba'}
 
@@ -19,13 +19,10 @@ stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
 def check_city_guess(stream, message):
     print "Got connection"
-    _, city = message
-    if city in CITIES:
-        reply = 'CORRECT'
-    elif:
-        reply = 'INCORRECT'
+    city = message
+    reply = 'CORRECT' if city in CITIES else 'INCORRECT'
 
-    stream.send_multipart([identifier, reply])
+    stream.send(reply)
 
 stream.on_recv_stream(check_city_guess)
 
