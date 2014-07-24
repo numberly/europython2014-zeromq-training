@@ -6,11 +6,8 @@ import json
 
 
 io_loop = ioloop.IOLoop()
-
 context = zmq.Context()
-
 socket = context.socket(zmq.ROUTER)
-
 
 stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
@@ -18,9 +15,9 @@ CLIENTS = set()
 
 
 def hello(stream, message):
-    CLIENTS.add(message[0])
-    reply = list(CLIENTS)
-    stream.send_multipart(reply)
+    addr, text = message
+    CLIENTS.add(message[1])
+    stream.send_multipart((addr, ' '.join(CLIENTS)))
 
 stream.on_recv_stream(hello)
 
