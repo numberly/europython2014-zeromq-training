@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import argparse
 import zmq
 import socket
@@ -25,5 +25,5 @@ args = parser.parse_args()
 s.connect(args.connect_address)
 for i in range(10):
     msg = "Hi server this is my message {}".format(i)
-    socket.send(msg)
-    print socket.recv()
+    s.send(msg)
+    print s.recv()
