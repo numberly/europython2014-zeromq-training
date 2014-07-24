@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import zmq
 from zmq.eventloop import ioloop, zmqstream
 
