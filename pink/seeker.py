@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
 import argparse
+import functools
 import time
+import threading
+
 import zmq
 
 context = zmq.Context()
@@ -43,26 +46,43 @@ def get_cities():
             yield c
 
 
-seeker = context.socket(zmq.DEALER)
-print peers
-for peer in peers:
+def worker(peer):
+    seeker = context.socket(zmq.DEALER)
     seeker.connect('tcp://{}'.format(peer))
-poller = zmq.Poller()
-poller.register(seeker, zmq.POLLIN|zmq.POLLOUT)
-gen = get_cities()
-while True:
-    print 'poll'
-    socks = dict(poller.poll(timeout=1))
-    print socks
-    if seeker in socks and socks[seeker] == zmq.POLLOUT:
-        try:
-            city = next(gen)
-        except StopIteration:
+    poller = zmq.Poller()
+    poller.register(seeker, zmq.POLLIN|zmq.POLLOUT)
+    gen = get_cities()
+    while True:
+        socks = dict(poller.poll(timeout=5000))
+        if seeker in socks and socks[seeker] == zmq.POLLOUT:
+            try:
+                city = next(gen)
+            except StopIteration:
+                break
+            seeker.send(city)
+        elif seeker in socks and socks[seeker] == zmq.POLLIN:
+            response = seeker.recv()
+            if response == 'CORRECT':
+                print 'Won', city
+                break
+        elif seeker in socks and socks[seeker] == zmq.POLLIN|zmq.POLLOUT:
+            response = seeker.recv()
+            if response == 'CORRECT':
+                print 'Won', city
+                break
+            try:
+                city = next(gen)
+            except StopIteration:
+                break
+            seeker.send(city)
+        else:
+            print 'timeout'
             break
-        print city
-        seeker.send(city)
-    if seeker in socks and socks[seeker] == zmq.POLLIN:
-        response = seeker.recv()
-        if response == 'CORRECT':
-            print 'Won', city
-    time.sleep(.01)
+        time.sleep(.1)
+
+
+for peer in peers:
+    thread = threading.Thread(target=functools.partial(worker, peer))
+    thread.daemon = True
+    thread.start()
+    thread.join()

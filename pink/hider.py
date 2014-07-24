@@ -2,14 +2,11 @@
 import argparse
 import zmq
 from zmq.eventloop import ioloop, zmqstream
-import json
 
 
 io_loop = ioloop.IOLoop()
 
 context = zmq.Context()
-
-
 
 CITY = None
 
@@ -22,16 +19,17 @@ def get_ip():
     s.close()
     return ip
 
+
 def guess(stream, message):
     print message
     city = message[1]
-    reply = "CORRECT" if city == CITY else "INCORRECT"
+    reply = "CORRECT" if city.lower() == CITY.lower() else "INCORRECT"
     stream.send_multipart([message[0], reply])
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--port', default='5557')
-parser.add_argument('-C', '--connect-address', default='tcp://172.16.16.188:5556')
+parser.add_argument('-C', '--connect-address', default='tcp://127.0.0.1:5555')
 parser.add_argument('-c', '--city', default='Berlin')
 
 args = parser.parse_args()
@@ -49,5 +47,5 @@ CITY = args.city
 sock = context.socket(zmq.ROUTER)
 stream = zmqstream.ZMQStream(sock, io_loop=io_loop)
 stream.on_recv_stream(guess)
-sock.bind("tcp://%s:%s" %(myip, args.port))
+sock.bind("tcp://%s:%s" % (myip, args.port))
 io_loop.start()
