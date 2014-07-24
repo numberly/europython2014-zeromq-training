@@ -1,15 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import argparse
 import zmq
 from zmq.eventloop import ioloop, zmqstream
-
 
 io_loop = ioloop.IOLoop()
 
 context = zmq.Context()
 
 socket = context.socket(zmq.ROUTER)
-
 
 stream = zmqstream.ZMQStream(socket, io_loop=io_loop)
 
@@ -20,6 +20,7 @@ def register(stream, message):
     addr, text = message
     CLIENTS.add(message[1])
     stream.send_multipart((addr, ' '.join(CLIENTS)))
+
 
 stream.on_recv_stream(register)
 
