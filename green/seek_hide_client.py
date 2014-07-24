@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import argparse
 import zmq
 import socket
@@ -20,7 +22,7 @@ if not local_address:
     _, scheme_host, port = args.connect_address.split(':')
     _, _, host = scheme_host.split('/')
     s.connect((host, int(port)))
-    local_address = s.getsockname()[0]
+    local_address = '{}:{}'.format(s.getsockname()[0], port)
     s.close()
 
 sock.connect(args.connect_address)
