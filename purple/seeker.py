@@ -2,6 +2,7 @@
 
 import argparse
 import zmq
+import utils
 
 context = zmq.Context()
 
@@ -13,12 +14,11 @@ parser.add_argument('-p', '--port', default=4444)
 
 args = parser.parse_args()
 
-import socket as socket2
-myip = socket2.gethostbyname(socket2.gethostname())
+myip = utils.get_local_ip(args.connect_address.split('://')[1].split(':')[0])
 
 socket.connect(args.connect_address)
 
 # First just register to the server
-command = 'HELLO {} {}'.format(myip, args.port)
-socket.send_multipart([myip, args.port])
-print socket.recv_json()
+command = '{}:{}'.format(myip, args.port)
+socket.send(command)
+print socket.recv()
