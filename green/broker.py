@@ -17,7 +17,7 @@ CLIENTS = set()
 
 
 def register(stream, message):
-    addr, text = message
+    addr, text = message.lstrip("REGISTER").strip()
     CLIENTS.add(message[1])
     stream.send_multipart((addr, ' '.join(CLIENTS)))
 
