@@ -9,7 +9,10 @@ def get_local_ip():
 
     :returns IpAddress as String
     """
-    ip = socket.gethostbyname(socket.gethostname())
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect((parser.broker_address, 0))
+    ip = s.getsockname()[0]
+    s.close()
     return ip
 
 
