@@ -20,7 +20,7 @@ args = parser.parse_args()
 def guess(stream, message):
     addr, text = message
     print text
-    stream.send_multipart((addr, 'yes' if text == args.city else 'no'))
+    stream.send_multipart((addr, 'CORRECT' if text == args.city else 'INCORRECT'))
 
 stream.on_recv_stream(guess)
 

@@ -31,7 +31,7 @@ for player in players:
     player_socket.connect('tcp://{}'.format(player))
     for guess in guesses:
         player_socket.send(guess)
-        if player_socket.recv_string() == 'yes':
+        if player_socket.recv_string() == 'CORRECT':
             print('Guessed: {}'.format(guess))
             break
     else:
