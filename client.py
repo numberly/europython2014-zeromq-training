@@ -13,7 +13,7 @@ class ZMQClient(object):
         self.socket.connect(self.addr)
 
     def send(self, msg):
-        self.socket.send_multipart([str(i)])
+        self.socket.send_multipart([msg])
         return self.socket.recv()
 
 if __name__ == '__main__':
