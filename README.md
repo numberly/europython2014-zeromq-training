@@ -14,6 +14,13 @@ Running the client:
 
 ## Hide and Seek
 
-This will be an implementation of [RFC-002](RFC-002.md).
+This will be an implementation of [RFC-002](RFC-002.md) made by each team.
 
-*TODO*
+Running the broker:
+
+    ./<team>/broker.py
+
+Running the seeker:
+
+    ./<team>/seek_hide_client.py
+
